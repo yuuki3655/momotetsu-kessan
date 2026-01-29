@@ -1,16 +1,30 @@
-# React + Vite
+# 桃鉄風 決算メーカー (Momotetsu Financial Results Maker)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+10年間の総資産推移を入力して、桃太郎電鉄風の決算画面を再現できるウェブアプリです。
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
+**[https://yuuki3655.github.io/momotetsu-kessan/](https://yuuki3655.github.io/momotetsu-kessan/)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ 特徴
+- **4人対戦対応:** 最大4人の社長（プレイヤー）の資産推移を比較可能。
+- **フレキシブル設定:** プレイ人数（1〜4人）とプレイ年数（1〜100年）を自由に変更できます。
+- **本格アニメーション:** 臨時列車の通過や決算ロゴの演出を再現。
+- **動的グラフ:** Rechartsを使用した、各プレイヤーの成長記録を折れ線グラフで表示。
 
-## React Compiler
+## 🛠️ 開発環境
+- **Framework:** React (Vite)
+- **Styling:** Tailwind CSS, Framer Motion
+- **Visualization:** Recharts
+- **Icons:** Lucide React
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📦 デプロイ方法
+GitHub Actionsにより、`main`ブランチへのプッシュで自動的にGitHub Pagesへデプロイされます。
 
-## Expanding the ESLint configuration
+```bash
+# ローカルでの開発
+npm install
+npm run dev
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# 手動デプロイ
+npm run deploy
+```
