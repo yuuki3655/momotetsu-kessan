@@ -1,0 +1,47 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="fujiGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#aaddff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4466aa;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="1920" height="1080" fill="url(#skyGradient)" />
+
+  <!-- Clouds (Simple) -->
+  <path d="M100,100 Q150,50 200,100 T300,100 T400,100" fill="none" stroke="white" stroke-width="20" stroke-linecap="round" opacity="0.6" filter="blur(10px)"/>
+  <path d="M1600,200 Q1650,150 1700,200 T1800,200" fill="none" stroke="white" stroke-width="20" stroke-linecap="round" opacity="0.5" filter="blur(15px)"/>
+
+  <!-- Mt. Fuji -->
+  <path d="M960,200 L600,800 H1320 Z" fill="url(#fujiGradient)" />
+  <!-- Snow Cap details -->
+  <path d="M960,200 L850,450 Q960,400 1070,450 Z" fill="white" />
+  
+  <!-- Green Hills (Midground) -->
+  <path d="M0,700 Q400,600 960,750 Q1520,600 1920,700 V1080 H0 Z" fill="#2e8b57" />
+
+  <!-- Yellow Flower Field (Foreground) -->
+  <rect x="0" y="850" width="1920" height="230" fill="#ffd700" />
+  <!-- Texture for flowers -->
+  <pattern id="flowerPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+    <circle cx="10" cy="10" r="5" fill="#e6c200" />
+  </pattern>
+  <rect x="0" y="850" width="1920" height="230" fill="url(#flowerPattern)" opacity="0.3" />
+
+  <!-- Cherry Blossoms (Sides) -->
+  <g fill="#ffb7c5">
+    <circle cx="100" cy="400" r="150" opacity="0.8" />
+    <circle cx="250" cy="500" r="120" opacity="0.8" />
+    <circle cx="50" cy="600" r="100" opacity="0.8" />
+    
+    <circle cx="1800" cy="400" r="150" opacity="0.8" />
+    <circle cx="1700" cy="550" r="130" opacity="0.8" />
+    <circle cx="1880" cy="650" r="100" opacity="0.8" />
+  </g>
+</svg>

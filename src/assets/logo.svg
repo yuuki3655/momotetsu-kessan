@@ -1,0 +1,49 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gold Gradient -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff7cc;stop-opacity:1" />
+      <stop offset="20%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffaa00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cc8800;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Filters for Outline and Shadow -->
+    <filter id="textEffects" x="-50%" y="-50%" width="200%" height="200%">
+      <!-- Thick Red Outline (dilating the source alpha) -->
+      <feMorphology operator="dilate" radius="8" in="SourceAlpha" result="thickOutline" />
+      <feFlood flood-color="#cc0000" result="redColor" />
+      <feComposite in="redColor" in2="thickOutline" operator="in" result="redOutline" />
+      
+      <!-- Second Darker Outline/Shadow (simulating 3D depth) -->
+      <feMorphology operator="dilate" radius="12" in="SourceAlpha" result="thickerOutline" />
+      <feOffset dx="5" dy="10" in="thickerOutline" result="offsetShadow" />
+      <feFlood flood-color="#660000" result="shadowColor" />
+      <feComposite in="shadowColor" in2="offsetShadow" operator="in" result="darkShadow" />
+
+      <!-- Inner Bevel/Highlight (fake 3D on the gold) -->
+      <feSpecularLighting in="SourceGraphic" surfaceScale="5" specularConstant="1" specularExponent="20" lighting-color="#ffffff" result="specular">
+        <fePointLight x="400" y="-100" z="200" />
+      </feSpecularLighting>
+      <feComposite in="specular" in2="SourceAlpha" operator="in" result="specularMasked" />
+      
+      <!-- Merge Everything -->
+      <feMerge>
+        <feMergeNode in="darkShadow" />
+        <feMergeNode in="redOutline" />
+        <feMergeNode in="SourceGraphic" />
+        <feMergeNode in="specularMasked" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Text Group -->
+  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
+        font-family="'Hiragino Kaku Gothic Std', 'Yu Gothic', 'Meiryo', sans-serif" 
+        font-weight="900" font-size="280" 
+        fill="url(#goldGradient)" 
+        filter="url(#textEffects)"
+        style="letter-spacing: 20px;">
+    決算
+  </text>
+</svg>
