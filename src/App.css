@@ -10,6 +10,16 @@
     0 10px 20px rgba(0,0,0,0.5);
   margin: 20px 0;
   transform: skewX(-5deg);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Responsive Title */
+@media (max-width: 768px) {
+  .momo-title {
+    font-size: 2rem;
+    margin: 10px 0;
+  }
 }
 
 .momo-panel {
@@ -20,17 +30,20 @@
   box-shadow: 
     inset 0 0 20px rgba(255, 204, 0, 0.1),
     0 8px 0 #cc9900;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .momo-input {
   background: #fff;
   border: 2px solid #003366;
   border-radius: 4px;
-  padding: 6px 10px;
+  padding: 8px;
   width: 100%;
   color: #000;
   font-weight: bold;
   text-align: right;
+  min-width: 60px;
 }
 
 .momo-button {
@@ -61,12 +74,15 @@
 table {
   border-collapse: separate;
   border-spacing: 0 8px;
+  width: 100%;
+  min-width: 600px; /* Force scroll on small screens */
 }
 
 th {
   color: #ffcc00;
   font-weight: 900;
   text-align: center;
+  white-space: nowrap;
 }
 
 td {
@@ -92,19 +108,33 @@ td:last-child {
   width: 100vw;
   height: 100vh;
   z-index: 1000;
-  overflow: hidden;
-  background-color: #4facfe; /* Fallback sky color */
+  overflow: auto; /* Allow scrolling for the entire overlay */
+  background-color: #4facfe;
+  display: block; /* Removed flex centering to fix scroll clipping */
 }
 
 .scene-container {
     position: relative;
     width: 100%;
     height: 100%;
+    overflow: hidden; /* Keep animation contained */
+    display: flex; /* Moved centering here for Animation view */
+    align-items: center;
+    justify-content: center;
 }
 
-/* Background Layer */
+/* Specific container for the scrollable result board */
+.result-scene-container {
+    position: relative;
+    width: max-content; /* Expand to fit board width */
+    min-width: 100%;    /* Cover viewport */
+    height: max-content;
+    min-height: 100%;   /* Ensure it fills screen height */
+    display: block;      /* Simple block flow is most reliable for vertical scroll */
+}
+
 .background-layer {
-    position: absolute;
+    position: fixed; /* Fixed background */
     top: 0;
     left: 0;
     width: 100%;
@@ -118,20 +148,19 @@ td:last-child {
     object-fit: cover;
 }
 
-/* Train Layer */
 .train-layer {
     position: absolute;
-    bottom: 15%; /* Positioned on the tracks/green area */
+    bottom: 15%;
     left: 0;
     width: 100%;
-    height: 200px; /* Match SVG height roughly */
+    height: 200px;
     z-index: 2;
     pointer-events: none;
 }
 
 .train-container {
     position: absolute;
-    width: 800px; /* Match SVG width */
+    width: 800px;
     animation: driveTrain 4s linear forwards;
 }
 
@@ -141,12 +170,11 @@ td:last-child {
     filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.3));
 }
 
-/* Logo Layer */
 .logo-layer {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -60%); /* Center but slightly higher */
+    transform: translate(-50%, -60%);
     width: 60%;
     max-width: 800px;
     z-index: 3;
@@ -156,31 +184,37 @@ td:last-child {
 .logo-layer img {
     width: 100%;
     height: auto;
-    /* Extra drop shadow for pop */
     filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.4));
 }
 
-/* Result Board Styles */
+/* Result Board Styles - Fixed Size with Scroll */
 .board-layer {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 98%;
-    max-width: 1300px;
+    position: relative; /* Changed from absolute to flow with scroll */
+    width: 1000px; /* Fixed Base Width - triggers scroll on mobile */
+    height: 600px; /* Fixed Base Height */
+    margin: 50px auto; /* Center with margin, allow scroll */
     z-index: 4;
+    flex-shrink: 0; /* Prevent squishing in flex container */
+    transform-origin: center top;
 }
+
+/* Scale up for large desktop screens */
+@media (min-width: 1200px) {
+    .board-layer {
+        transform: scale(1.4);
+        margin-bottom: 300px; /* Compensate for scale height increase */
+    }
+}
+
+/* Removed Scale Media Queries to force scroll */
 
 .board-container {
     position: relative;
     width: 100%;
-    padding-bottom: 60%; /* Aspect ratio 1000:600 */
+    height: 100%;
 }
 
 .board-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6));
@@ -188,20 +222,19 @@ td:last-child {
 
 .graph-overlay {
     position: absolute;
-    /* SVG: x=265, y=125, w=670, h=350 */
-    top: 20.8%;
-    left: 26.5%;
-    width: 67%;
-    height: 58.3%;
+    /* Fixed relative to 1000x600 board */
+    top: 125px;
+    left: 265px;
+    width: 670px;
+    height: 350px;
 }
 
 .yaxis-overlay {
     position: absolute;
-    /* SVG: x=65, y=125, w=200, h=350 */
-    top: 20.8%;
-    left: 6.5%;
-    width: 20%;
-    height: 58.3%;
+    top: 125px;
+    left: 65px;
+    width: 200px;
+    height: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -214,37 +247,16 @@ td:last-child {
     font-family: 'Hiragino Kaku Gothic Std', 'Meiryo', sans-serif;
     font-weight: 900;
     color: #5c3317;
-    font-size: clamp(0.8rem, 1.5vw, 1.2rem);
-}
-
-.board-actions {
-    position: absolute;
-    bottom: 5%; /* SVG Footer Area */
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+    font-size: 1.2rem;
 }
 
 /* Animations */
 @keyframes driveTrain {
-    0% {
-        transform: translateX(-100%); /* Start fully off-screen left */
-    }
-    100% {
-        transform: translateX(100vw); /* Move to off-screen right */
-    }
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100vw); }
 }
 
 @keyframes floatLogo {
-    0% {
-        transform: translate(-50%, -60%) scale(1);
-    }
-    100% {
-        transform: translate(-50%, -62%) scale(1.05);
-    }
-}
-
-.font-mono {
-  font-family: 'Courier New', Courier, monospace;
+    0% { transform: translate(-50%, -60%) scale(1); }
+    100% { transform: translate(-50%, -62%) scale(1.05); }
 }

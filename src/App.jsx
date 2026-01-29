@@ -80,9 +80,6 @@ function App() {
   const startKessan = () => {
     setView('animating');
     setAnimationStep(0);
-    // 0s: Intro Start (Train + Logo)
-    // 5s: Jump directly to Result Board
-    
     setTimeout(() => {
         setView('result');
     }, 5000);
@@ -122,7 +119,7 @@ function App() {
   return (
     <div className="flex flex-col items-center">
       {view === 'input' && (
-        <header className="mt-0 mb-0">
+        <header className="mt-8 mb-4 w-full px-4">
           <h1 className="momo-title">桃鉄風 決算メーカー</h1>
         </header>
       )}
@@ -134,21 +131,23 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="momo-panel w-full max-w-6xl p-6 m-4"
+            className="momo-panel w-full max-w-6xl p-4 md:p-6 m-2 md:m-4"
           >
-            {/* Settings Control Panel */}
-            <div className="flex flex-wrap justify-center gap-8 mb-6 bg-blue-900/50 p-4 rounded-lg border-2 border-yellow-500/30">
-              <div className="flex items-center gap-3">
-                <Users className="text-yellow-400" />
-                <span className="font-bold text-lg">プレイ人数:</span>
+            {/* Settings Control Panel - Stack on Mobile, Row on Desktop */}
+            <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-8 mb-6 bg-blue-900/50 p-4 rounded-lg border-2 border-yellow-500/30">
+              <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3">
+                <div className="flex items-center gap-2">
+                   <Users className="text-yellow-400" />
+                   <span className="font-bold text-lg">プレイ人数:</span>
+                </div>
                 <div className="flex gap-1">
                   {[1, 2, 3, 4].map(num => (
                     <button
                       key={num}
                       onClick={() => setNumPlayers(num)}
-                      className={`px-4 py-1 rounded font-bold transition-all ${
+                      className={`px-3 md:px-4 py-2 md:py-1 rounded font-bold transition-all text-sm md:text-base ${
                         numPlayers === num 
-                          ? 'bg-yellow-400 text-red-800 scale-110 shadow-lg' 
+                          ? 'bg-yellow-400 text-red-800 scale-105 shadow-lg' 
                           : 'bg-blue-800 text-gray-400 hover:bg-blue-700'
                       }`}
                     >
@@ -158,9 +157,11 @@ function App() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <Calendar className="text-yellow-400" />
-                <span className="font-bold text-lg">プレイ年数:</span>
+              <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3">
+                <div className="flex items-center gap-2">
+                    <Calendar className="text-yellow-400" />
+                    <span className="font-bold text-lg">プレイ年数:</span>
+                </div>
                 <div className="flex items-center gap-2">
                   <input 
                     type="number" 
@@ -173,27 +174,28 @@ function App() {
                       if (val < 1) val = 1;
                       setNumYears(val);
                     }}
-                    className="bg-white text-blue-900 font-bold px-3 py-1 rounded w-20 text-center text-lg border-2 border-yellow-400 focus:outline-none"
+                    className="bg-white text-blue-900 font-bold px-3 py-2 rounded w-24 text-center text-lg border-2 border-yellow-400 focus:outline-none"
                   />
                   <span className="font-bold">年</span>
                 </div>
               </div>
             </div>
 
-            <h2 className="text-xl font-bold mb-4 text-center text-yellow-400">総資産の推移を入力 (単位: 万円)</h2>
+            <h2 className="text-lg md:text-xl font-bold mb-4 text-center text-yellow-400">総資産の推移を入力 (単位: 万円)</h2>
             
-            <div className="overflow-visible">
+            {/* Table Container with Overflow Auto for Horizontal Scrolling */}
+            <div className="overflow-x-auto w-full">
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-[#004080] z-10 shadow-md">
                   <tr>
-                    <th className="p-2 w-20">年度</th>
+                    <th className="p-2 w-16 md:w-20">年度</th>
                     {activePlayers.map(p => (
-                      <th key={p.id} className="p-2 min-w-[150px]">
+                      <th key={p.id} className="p-2 min-w-[100px] md:min-w-[150px]">
                         <input
                           type="text"
                           value={p.name}
                           onChange={(e) => handleNameChange(p.id, e.target.value)}
-                          className="bg-transparent font-bold text-center w-full focus:outline-none border-b-2 border-dashed border-white/30 focus:border-white"
+                          className="bg-transparent font-bold text-center w-full focus:outline-none border-b-2 border-dashed border-white/30 focus:border-white text-sm md:text-base"
                           style={{color: p.color}}
                         />
                       </th>
@@ -203,7 +205,7 @@ function App() {
                 <tbody>
                   {data.map((row, idx) => (
                     <tr key={idx} className="border-t border-blue-900 hover:bg-white/5 transition-colors">
-                      <td className="p-2 font-bold text-center">{idx + 1}年目</td>
+                      <td className="p-2 font-bold text-center text-xs md:text-sm whitespace-nowrap">{idx + 1}年目</td>
                       {activePlayers.map(p => (
                         <td key={p.id} className="p-2">
                           <input 
@@ -221,9 +223,9 @@ function App() {
               </table>
             </div>
 
-            <div className="mt-6">
-              <button onClick={startKessan} className="momo-button flex items-center gap-2 mx-auto">
-                <Play fill="currentColor" size={20} /> 決算発表を開始する！
+            <div className="mt-8 pb-4">
+              <button onClick={startKessan} className="momo-button flex items-center gap-2 mx-auto w-full md:w-auto justify-center">
+                <Play fill="currentColor" size={24} /> 決算発表を開始する！
               </button>
             </div>
           </motion.div>
@@ -259,20 +261,21 @@ function App() {
             animate={{ opacity: 1 }}
             className="kessan-overlay"
           >
-             <div className="scene-container">
+             <div className="result-scene-container">
                 <div className="background-layer"><img src={backgroundSvg} alt="Scenery" /></div>
                 <div className="board-layer">
                   <div className="board-container">
                     <img src={boardSvg} className="board-bg" alt="Result Board" />
                     
-                    {/* Dynamic Year Label Overlay on Board */}
+                    {/* Fixed Position Year Label (Relative to 1000x600 board) */}
                     <div 
-                      className="absolute text-3xl font-black text-[#5c3317] tracking-widest whitespace-nowrap" 
+                      className="absolute font-black text-[#5c3317] tracking-widest whitespace-nowrap" 
                       style={{
                         fontFamily: "'Hiragino Kaku Gothic Std', sans-serif",
-                        left: '46%',
-                        top: '10.8%',
-                        transform: 'translate(-50%, -50%)'
+                        left: '460px',
+                        top: '65px',
+                        transform: 'translate(-50%, -50%)',
+                        fontSize: '2.5rem' // Fixed size, scales with board
                       }}
                     >
                         {numYears}年
@@ -288,7 +291,7 @@ function App() {
                       </div>
                     </div>
 
-                    <div className="graph-overlay">
+<div className="graph-overlay">
                        <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={processedData} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
                           <CartesianGrid strokeDasharray="3 3" stroke="#6d5a45" vertical={true} horizontal={true} />
